@@ -8,57 +8,35 @@
     <script src="https://cdn.jsdelivr.net/npm/aframe-physics-system@3.3.0/dist/aframe-physics-system.min.js"></script>
   </head>
   <body>
-    <a-scene background="color: black" physics="debug: true; gravity: -9.8">
+    <a-scene background="color: black" physics="debug: true; gravity: -9.8" fog="type: linear; color: #000; far: 30;">
       <a-assets> 
         <a-asset-item id="house" src="house/scene.gltf"></a-asset-item>
         <a-asset-item id="gun" src="gun/scene.gltf"></a-asset-item>
+        <a-asset-item id="vandal" src="vandal/scene.gltf"></a-asset-item>
         <a-asset-item id="zombie" src="zombie/scene.gltf"></a-asset-item>
         <a-asset-item id="car" src="car/scene.gltf"></a-asset-item>
         <img id="NightSky" src="NightSky.png">
       </a-assets>
 
-      <!-- Sky -->
-      <a-sky src="#NightSky"></a-sky>
-
       <!-- Models -->
       <a-gltf-model id="houseModel" src="#house" position="5.533 0.43491 -4.8752" static-body="shape: mesh" shadow></a-gltf-model>
       <a-gltf-model id="gunModel" src="#gun" position="0 0 -15" static-body="shape: mesh" shadow></a-gltf-model>
+      <a-gltf-model id="vandalModel" src="#vandal" position="0 0 -15" static-body="shape: mesh" shadow></a-gltf-model>
       <a-gltf-model id="zombieModel" src="#zombie" position="0 0 -5" static-body="shape: mesh" shadow></a-gltf-model>
       <a-gltf-model id="carModel" src="#car" position="0 0 -5" static-body="shape: mesh" shadow></a-gltf-model>
 
-      <!-- Player -->
-      <a-entity id="cameraEntity" camera position="0 2 -10" wasd-controls look-controls>
-        <!--  -->
-        <a-entity id="player" dynamic-body="shape: capsule; mass: 0;"> 
-          <!-- Flashlight attached to the camera -->
-          <a-entity id="flashlight" light="type: spot; color: white; intensity: 15; distance: 50; angle: 30; penumbra: 0.5" position="0 0 -1"></a-entity>
-          <!-- Peripheral light for a more realistic flashlight effect -->
-          <a-entity id="peripheralLight" light="type: point; color: white; intensity: 2; distance: 20" position="0 0 -1"></a-entity>
-          <a-camera look-controls="pointerLockEnabled: true">
-            <a-cursor></a-cursor>
+      <!-- Player with Camera Lag and Jump Controls -->
+      <a-entity id="player" position="0 0 0" wasd-controls="acceleration: 40" jump-controls>
+        <a-entity id="cameraWrapper" position="0 0 0">
+          <a-camera id="camera" position="0 0 0" look-controls="pointerLockEnabled: true">
+            <a-entity geometry="primitive: circle; radius: 0.005" material="color: red" position="0 0 0"></a-entity>
           </a-camera>
+          <a-entity id="flashlight" light="type: spot; color: white; intensity: 5; distance: 100; angle: 33; penumbra: 0.5" position="0 0 -0.5"></a-entity>
         </a-entity>
       </a-entity>
-
-      <!-- Flashlight -->
-      <a-light type="directional" color="#222" intensity="0.01" position="-1 2 1"></a-light>
-
-      <!-- Environment. Plan on possibly using blender to build a world and importing it here -->
-
     </a-scene>
-    <script>
-      // Send the scene data to the server
-      document.addEventListener('DOMContentLoaded', (event) => {
-        var scene = AFRAME.scenes[0];
-        if (scene) {
-          var sceneHTML = scene.outerHTML;
-          var obj = { scene: sceneHTML };
-          var xhr = new XMLHttpRequest();
-          xhr.open("POST", "/saveScene", true);
-          xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-          xhr.send(JSON.stringify(obj));
-        }
-      });
-    </script>
+    
+    <!-- Reference external JavaScript file -->
+    <script src="script.js"></script>
   </body>
 </html>

@@ -1,4 +1,6 @@
 {
     "liveServer.settings.multiRootWorkspaceName": "Escaping-Reality",
-    "liveServer.settings.port": 5501
+    "liveServer.settings.port": 5501,
+    "bitoAI.codeCompletion.enableAutoCompletion": false,
+    "bitoAI.codeCompletion.enableCommentToCode": true
 }
